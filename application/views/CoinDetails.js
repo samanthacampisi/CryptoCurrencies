@@ -9,9 +9,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PureChart from 'react-native-pure-chart';
-import { fetchCoinDetails, fetchCoinHistorical } from '../actions/';
+import { fetchCoinDetails, fetchCoinHistorical, saveToUserPortfolio } from '../actions/';
 import Title from '../components/Title';
 import Loading from '../components/Loading';
+import Button from '../components/Button';
 
 const styles = StyleSheet.create({
   header: {
@@ -112,9 +113,9 @@ class CoinDetails extends Component {
 
   render() {
     const {
-      fill,
+      fill, alignCenter,
     } = styles;
-    const { coin } = this.props;
+    const { coin, coinId } = this.props;
     const { data } = coin;
 
     return (
@@ -126,6 +127,12 @@ class CoinDetails extends Component {
           />
           { this.renderStats() }
           { this.renderHistorical() }
+          <View style={alignCenter}>
+            <Button
+              onPress={() => { this.props.saveToUserPortfolio(coinId); }}
+              text="Save to portfolio"
+            />
+          </View>
         </ScrollView>
       </View>
     );
@@ -139,6 +146,7 @@ CoinDetails.propTypes = {
   isFetchingHistorical: PropTypes.bool.isRequired,
   fetchCoinDetails: PropTypes.func.isRequired,
   fetchCoinHistorical: PropTypes.func.isRequired,
+  saveToUserPortfolio: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
 };
 
@@ -153,6 +161,6 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ fetchCoinDetails, fetchCoinHistorical }, dispatch);
+  bindActionCreators({ fetchCoinDetails, fetchCoinHistorical, saveToUserPortfolio }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoinDetails);

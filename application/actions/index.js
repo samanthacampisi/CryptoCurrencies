@@ -11,6 +11,8 @@ import {
   SAVE_TO_USER_PORTFOLIO_SUCCESS,
 } from '../constants/actionTypes';
 
+const base64 = require('base-64');
+
 export const fetchAllCoinsSuccess = (coins, page) => ({
   type: FETCH_ALL_COINS_SUCCESS,
   payload: { coins, page },
@@ -75,7 +77,7 @@ export const fetchUserPortfolio = () => (dispatch) => {
     method: 'GET',
     headers: {
       Accept: 'application/json',
-      Authorization: 'Basic richard@rich.com:secret',
+      Authorization: `Basic ${base64.encode('richard@rich.com:secret')}`,
     },
   })
     .then(response => response.json())
@@ -98,7 +100,7 @@ export const saveToUserPortfolio = (coin_id, amount, price_usd, traded_at, notes
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      Authorization: 'Basic richard@rich.com:secret',
+      Authorization: `Basic ${base64.encode('richard@rich.com:secret')}`,
     },
     body: JSON.stringify({
       coin_id,

@@ -76,7 +76,6 @@ export default (state = INITIAL_STATE, action) => {
       const formattedHistorical = historical.map((e) => { return { x: e.snapshot_at, y: parseFloat(e.price_usd) }; });
       const coinInMap = coinMap.get(coinId) || {};
       coinMap.set(coinId, { ...coinInMap, historical: formattedHistorical });
-      console.log(coinMap);
 
       return {
         ...state,

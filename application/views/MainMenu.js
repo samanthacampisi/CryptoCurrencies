@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 class MainMenu extends Component {
   goToCoinList = () => { this.props.navigation.navigate('Coins'); }
 
-  goToPortfolio = () => {}
+  goToPortfolio = () => { this.props.navigation.navigate('Portfolio'); }
 
   render() {
     const {
