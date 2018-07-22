@@ -10,6 +10,7 @@
     "prop-types": "^15.6.2",
     "react": "16.4.1",
     "react-native": "^0.55.4",
+    "react-native-pure-chart": "0.0.23",
     "react-navigation": "^2.8.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",

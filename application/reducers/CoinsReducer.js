@@ -73,8 +73,10 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_COIN_HISTORICAL_SUCCESS: {
       const coinMap = new Map(state.coinMap);
       const { coinId, historical } = action.payload;
+      const formattedHistorical = historical.map((e) => { return { x: e.snapshot_at, y: parseFloat(e.price_usd) }; });
       const coinInMap = coinMap.get(coinId) || {};
-      coinMap.set(coinId, { ...coinInMap, historical });
+      coinMap.set(coinId, { ...coinInMap, historical: formattedHistorical });
+      console.log(coinMap);
 
       return {
         ...state,

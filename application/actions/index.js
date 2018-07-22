@@ -42,7 +42,7 @@ export const fetchCoinDetails = coinId => (dispatch) => {
     .then((responseJson) => {
       dispatch(fetchCoinDetailsSuccess(coinId, responseJson.coin));
     })
-    .catch((error) => { console.log(error); });
+    .catch((error) => { console.warn(error); });
 };
 
 export const fetchCoinHistoricalSuccess = (coinId, historical) => ({
@@ -59,7 +59,7 @@ export const fetchCoinHistorical = coinId => (dispatch) => {
     .then((responseJson) => {
       dispatch(fetchCoinHistoricalSuccess(coinId, responseJson.historical));
     })
-    .catch((error) => { console.log(error); });
+    .catch((error) => { console.warn(error); });
 };
 
 export const fetchUserPortfolioSuccess = portfolio => ({

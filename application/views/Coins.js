@@ -65,7 +65,12 @@ class Coins extends Component {
 
   keyExtractor = item => String(item.id);
 
-  renderItem = ({ item }) => <CoinItem coin={item} onItemPress={() => { console.log(item, 'lolo'); }} />
+  renderItem = ({ item }) => (
+    <CoinItem
+      coin={item}
+      onItemPress={() => { this.props.navigation.navigate('CoinDetails', { coinId: item.id }); }}
+    />
+  )
 
   renderHeader = () => {
     const {
