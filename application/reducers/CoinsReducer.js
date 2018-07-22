@@ -1,11 +1,25 @@
 import {
   FETCH_ALL_COINS,
   FETCH_ALL_COINS_SUCCESS,
+  FETCH_COIN_DETAILS,
+  FETCH_COIN_DETAILS_SUCCESS,
+  FETCH_COIN_HISTORICAL,
+  FETCH_COIN_HISTORICAL_SUCCESS,
+  FETCH_USER_PORTFOLIO,
+  FETCH_USER_PORTFOLIO_SUCCESS,
+  SAVE_TO_USER_PORTFOLIO,
+  SAVE_TO_USER_PORTFOLIO_SUCCESS,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   coins: [],
+  coinMap: new Map(),
+  portfolio: [],
   isFetchingAllCoins: false,
+  isFetchingCoinDetails: false,
+  isFetchingHistorical: false,
+  isFetchingPortfolio: false,
+  isSavingToPortfolio: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,6 +42,77 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         coins,
         isFetchingAllCoins: false,
+      };
+    }
+
+    case FETCH_COIN_DETAILS:
+      return {
+        ...state,
+        isFetchingCoinDetails: true,
+      };
+
+    case FETCH_COIN_DETAILS_SUCCESS: {
+      const coinMap = new Map(state.coinMap);
+      const { coinId, coin } = action.payload;
+      const coinInMap = coinMap.get(coinId) || {};
+      coinMap.set(coinId, { ...coinInMap, data: coin });
+
+      return {
+        ...state,
+        coinMap,
+        isFetchingCoinDetails: false,
+      };
+    }
+
+    case FETCH_COIN_HISTORICAL:
+      return {
+        ...state,
+        isFetchingHistorical: true,
+      };
+
+    case FETCH_COIN_HISTORICAL_SUCCESS: {
+      const coinMap = new Map(state.coinMap);
+      const { coinId, historical } = action.payload;
+      const coinInMap = coinMap.get(coinId) || {};
+      coinMap.set(coinId, { ...coinInMap, historical });
+
+      return {
+        ...state,
+        coinMap,
+        isFetchingHistorical: false,
+      };
+    }
+
+    case FETCH_USER_PORTFOLIO:
+      return {
+        ...state,
+        isFetchingPortfolio: true,
+      };
+
+    case FETCH_USER_PORTFOLIO_SUCCESS: {
+      const portfolio = action.payload;
+
+      return {
+        ...state,
+        portfolio,
+        isFetchingPortfolio: false,
+      };
+    }
+
+    case SAVE_TO_USER_PORTFOLIO:
+      return {
+        ...state,
+        isSavingToPortfolio: true,
+      };
+
+    case SAVE_TO_USER_PORTFOLIO_SUCCESS: {
+      const portfolio = state.portfolio.slice();
+      portfolio.push(action.payload);
+
+      return {
+        ...state,
+        portfolio,
+        isSavingToPortfolio: false,
       };
     }
 
