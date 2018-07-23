@@ -153,7 +153,7 @@ class CoinDetails extends Component {
               notes,
             );
           }}
-          disabled={!amount}
+          disabled={!amount.length}
           text={isSavingToPortfolio ? 'Saving...' : 'Save to portfolio'}
         />
       </View>

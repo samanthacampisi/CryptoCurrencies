@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, onPress }) => {
+const Button = ({ text, onPress, disabled }) => {
   const { textStyle, button } = styles;
   return (
-    <TouchableOpacity style={button} onPress={onPress}>
+    <TouchableOpacity style={button} onPress={onPress} disabled={disabled}>
       <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
   );
@@ -32,6 +32,11 @@ const Button = ({ text, onPress }) => {
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+};
+
+Button.defaultProps = {
+  disabled: false,
 };
 
 export default Button;
