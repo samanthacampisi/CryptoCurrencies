@@ -74,21 +74,19 @@ class CoinDetails extends Component {
 
     return (
       <View style={fill}>
-        <ScrollView>
-          <Title
-            title="Portfolio"
-            onBackPress={() => { this.props.navigation.goBack(); }}
-          />
-          <FlatList
-            data={portfolio}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
-            onRefresh={() => { this.props.fetchUserPortfolio(); }}
-            refreshing={isFetchingPortfolio}
-            ItemSeparatorComponent={() => <View style={[separator]} />}
-            ListHeaderComponent={this.renderHeader}
-          />
-        </ScrollView>
+        <Title
+          title="Portfolio"
+          onBackPress={() => { this.props.navigation.goBack(); }}
+        />
+        <FlatList
+          data={portfolio}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+          onRefresh={() => { this.props.fetchUserPortfolio(); }}
+          refreshing={isFetchingPortfolio}
+          ItemSeparatorComponent={() => <View style={[separator]} />}
+          ListHeaderComponent={this.renderHeader}
+        />
       </View>
     );
   }

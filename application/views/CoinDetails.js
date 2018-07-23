@@ -13,6 +13,7 @@ import { fetchCoinDetails, fetchCoinHistorical, saveToUserPortfolio } from '../a
 import Title from '../components/Title';
 import Loading from '../components/Loading';
 import Button from '../components/Button';
+import DefaultTextInput from '../components/DefaultTextInput';
 
 const styles = StyleSheet.create({
   header: {
@@ -50,9 +51,20 @@ const styles = StyleSheet.create({
   graphContainer: {
     paddingHorizontal: 10,
   },
+  formContainer: {
+    borderTopWidth: 1,
+    borderColor: 'grey',
+    padding: 10,
+    marginVertical: 10,
+  },
 });
 
 class CoinDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { amount: '', notes: '' };
+  }
+
   componentDidMount() {
     this.props.fetchCoinDetails(this.props.coinId);
     this.props.fetchCoinHistorical(this.props.coinId);
@@ -111,11 +123,46 @@ class CoinDetails extends Component {
     );
   }
 
+  renderForm = () => {
+    const { alignCenter, formContainer, text } = styles;
+    const { amount, notes } = this.state;
+    const { coinId, coin, isSavingToPortfolio } = this.props;
+    const { data } = coin;
+    return (
+      <View style={[alignCenter, formContainer]}>
+        <Text style={text}>Want to add it to your portfolio?</Text>
+        <DefaultTextInput
+          label="Amount"
+          isRequired
+          value={amount}
+          onChangeText={(val) => { this.setState({ amount: val }); }}
+          keyboardType="numeric"
+        />
+        <DefaultTextInput
+          label="Notes"
+          value={notes}
+          onChangeText={(val) => { this.setState({ notes: val }); }}
+        />
+        <Button
+          onPress={() => {
+            this.props.saveToUserPortfolio(
+              coinId,
+              parseFloat(amount),
+              data.price_usd,
+              Date.now(),
+              notes,
+            );
+          }}
+          disabled={!amount}
+          text={isSavingToPortfolio ? 'Saving...' : 'Save to portfolio'}
+        />
+      </View>
+    );
+  }
+
   render() {
-    const {
-      fill, alignCenter,
-    } = styles;
-    const { coin, coinId } = this.props;
+    const { fill } = styles;
+    const { coin, isFetchingCoinDetails } = this.props;
     const { data } = coin;
 
     return (
@@ -127,12 +174,7 @@ class CoinDetails extends Component {
           />
           { this.renderStats() }
           { this.renderHistorical() }
-          <View style={alignCenter}>
-            <Button
-              onPress={() => { this.props.saveToUserPortfolio(coinId); }}
-              text="Save to portfolio"
-            />
-          </View>
+          { !isFetchingCoinDetails && this.renderForm() }
         </ScrollView>
       </View>
     );
@@ -144,6 +186,7 @@ CoinDetails.propTypes = {
   coin: PropTypes.object.isRequired,
   isFetchingCoinDetails: PropTypes.bool.isRequired,
   isFetchingHistorical: PropTypes.bool.isRequired,
+  isSavingToPortfolio: PropTypes.bool.isRequired,
   fetchCoinDetails: PropTypes.func.isRequired,
   fetchCoinHistorical: PropTypes.func.isRequired,
   saveToUserPortfolio: PropTypes.func.isRequired,
@@ -151,12 +194,17 @@ CoinDetails.propTypes = {
 };
 
 const mapStateToProps = (state, props) => {
-  const { coinMap, isFetchingCoinDetails, isFetchingHistorical } = state.CoinsReducer;
+  const {
+    coinMap,
+    isFetchingCoinDetails,
+    isFetchingHistorical,
+    isSavingToPortfolio,
+  } = state.CoinsReducer;
   const coinId = props.navigation.getParam('coinId', null);
   const coin = coinMap.get(coinId) || {};
 
   return {
-    coinId, coin, isFetchingCoinDetails, isFetchingHistorical,
+    coinId, coin, isFetchingCoinDetails, isFetchingHistorical, isSavingToPortfolio,
   };
 };
 

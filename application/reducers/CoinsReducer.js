@@ -107,12 +107,8 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case SAVE_TO_USER_PORTFOLIO_SUCCESS: {
-      const portfolio = state.portfolio.slice();
-      portfolio.push(action.payload);
-
       return {
         ...state,
-        portfolio,
         isSavingToPortfolio: false,
       };
     }
